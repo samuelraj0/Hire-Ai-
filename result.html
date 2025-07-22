@@ -1,0 +1,46 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Top Ranked Resumes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <i class="fas fa-file-alt"></i>
+        <span>ResumeAnalyzer</span>
+      </div>
+      <div class="nav-links">
+        <a href="/">Analyzer</a>
+        <a href="/ranked-resumes">Top Candidates</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Top 10 Candidates</h1>
+    <div class="table-container">
+      <table>
+          <thead>
+              <tr>
+                  <th>Resume Name</th>
+                  <th>Score</th>
+              </tr>
+          </thead>
+          <tbody>
+              {% for res in results %}
+              <tr>
+                  <td>{{ res.name }}</td>
+                  <td>{{ res.score }}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

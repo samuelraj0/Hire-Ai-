@@ -1,0 +1,79 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Resume Analyzer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+ <nav class="navbar">
+  <div class="nav-container">
+    <div class="logo-container">
+      <img src="https://file.aiquickdraw.com/imgcompressed/img/compressed_5363feb35e2f8f51e60654fff0fb959d.webp" alt="Logo" class="logo-img">
+      
+      <span class="logo-text">Hire AI</span>
+      
+    </div>
+    <div class="nav-links">
+      <a href="/">Analyzer</a>
+    </div>
+  </div>
+</nav>
+  <div class="container">
+    <h1>AI Resume Analyzer</h1>
+
+    <form id="resumeForm" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="resume">Upload Resume (PDF):</label>
+        <input type="file" name="resume" id="resume" accept="application/pdf" required>
+      </div>
+
+      <div class="form-group">
+        <label for="job_title">Job Title:</label>
+        <input type="text" name="job_title" id="job_title" placeholder="e.g. Software Developer" required>
+      </div>
+
+      <button type="submit" class="submit-btn">
+        <i class="fas fa-search"></i> Analyze
+      </button>
+    </form>
+
+    <div id="loading" style="display:none;">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i> Please wait, analyzing...
+      </div>
+    </div>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("resumeForm");
+    const loading = document.getElementById("loading");
+    const result = document.getElementById("result");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      loading.style.display = "block";
+      result.innerHTML = "";
+
+      const formData = new FormData(form);
+      const response = await fetch("/analyze", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      loading.style.display = "none";
+
+      if (data.result) {
+        result.innerHTML = `<div class="card"><pre>${data.result}</pre></div>`;
+      } else {
+        result.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+      }
+    });
+  </script>
+</body>
+</html>
